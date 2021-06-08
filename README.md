@@ -7,7 +7,7 @@ https://docs.djangoproject.com/ja/3.2/intro/tutorial01/
 https://qiita.com/homines22/items/2730d26e932554b6fb58
 
 
-### はじめての Django アプリ作成、その 1
+## はじめての Django アプリ作成、その 1
 #### プロジェクトの作成
 最初にセットアップを行う。Djangoのプロジェクトを構成するコードを自動生成。  
 プロジェクト ... DBの設定やDjango固有のオプションの設定などのDjangoインスタンスの設定を集めたもの。  
@@ -62,3 +62,60 @@ urlpatterns = [
 ```
 
 `include()`関数で他の`URLconf`を参照することができる。
+
+## はじめての Django アプリ作成、その 2
+### DBの設定
+djangoApp/setting.py
+```python
+TIME_ZONE = 'JP'
+```
+
+migrateコマンドでsetting.py内のINSTALLED_APPを参照し、setting.pyファイルのDB設定に従って必要なDBのテーブルを作成する。  
+`python manage.py migrate`  
+
+### モデルの作成
+tutorial/models.py
+```python
+from django.db import models
+
+
+class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('date published')
+
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+```
+
+いずれもdjango.db.models.Modelのサブクラス。  
+マイグレーションはDjangoがモデルの変更を保存する方法。  
+`migrate`を実行し、モデルのテーブルをDBに作成する。  
+```
+python3 manage.py migrate
+```
+
+モデルの変更を実施するためには
+- モデルを変更する（models.py）。
+- これらの変更のためのマイグレーションを作成するために python3 manage.py makemigrations を実行する。
+- ータベースにこれらの変更を適用するために python manage.py migrate を実行する。
+
+### 管理ユーザの作成
+adminサイトにログインできるユーザの作成。
+```
+python3 manage.py createsuperuser
+```
+
+http://127.0.0.1:8000/admin/ にアクセス。
+
+adminページでアプリを操作するために、`Question`オブジェクトがadminインターフェースを持つということをadminに教える  
+polls/admin.py
+```
+from django.contrib import admin
+
+from .models import Question
+
+admin.site.register(Question)
+```
