@@ -109,6 +109,8 @@ python3 manage.py createsuperuser
 ```
 
 http://127.0.0.1:8000/admin/ にアクセス。
+KONA
+12345678
 
 adminページでアプリを操作するために、`Question`オブジェクトがadminインターフェースを持つということをadminに教える  
 polls/admin.py
@@ -137,7 +139,7 @@ Djangoのアプリケーションにおいて特定の機能を提供するウ�
 
 URLからビューを得るためにDjangoは<b>URLconf</b>を使用する。URLパターンをビューにマッピングする。  
 polls/views.py
-```
+```python
 def detail(request, question_id):
     return HttpResponse("You're looking at question %s." % question_id)
 
@@ -150,7 +152,7 @@ def vote(request, question_id):
 ```
 
 polls/urls.py
-```
+```python
 from django.urls import path
 
 from . import views
@@ -170,7 +172,7 @@ urlpatterns = [
 ### テンプレートを使う
 polls/templates/polls/index.html
 異なるアプリケーション内に同じ名前のテンプレートがあった場合に区別できないため、templatesの中に名前空間としてpollsディレクトリを作成している。
-```
+```python
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}
@@ -182,7 +184,7 @@ polls/templates/polls/index.html
 {% endif %}
 ```
 polls/views.py
-```
+```python
 from django.http import HttpResponse
 from django.template import loader
 
@@ -201,7 +203,7 @@ def index(request):
 ### URL名の名前空間
 現段階ではpollsアプリ1つだけだが、複数持つとき、{% url 'detail' %}などとした場合、他のアプリのdetailと被ることを防ぐためにpolls/urls.pyにapp_nameを追加する。  
 変更後は{% url 'polls:detail' %}となる。
-```
+```python
 from django.urls import path
 
 from . import views
@@ -215,3 +217,83 @@ urlpatterns = [
 ]
 ```
 
+## はじめての Django アプリ作成、その 3
+### フォームを書く
+forloop.counter でforタグが何回実行されたか表せる。  
+CSRFは{% csrf_token %}を記述することで対策できる。
+```python
+<form action="{% url 'polls:vote' question.id %}" method="post">
+  {% csrf_token %}
+  <fieldset>
+    <legend>
+      <h1>{{ question.question_text }}</h1>
+    </legend>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% for choice in question.choice_set.all %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+    {% endfor %}
+  </fieldset>
+</form>
+```
+
+### ↑のフォームを受け取る関数
+pk=request.POST['choice']は辞書のようなオブジェクト。キー指定でinputのnameを受け取れる？常に文字列  
+POSTデータにchoiceがない場合、request.POST['choice']はKeyErrorを出す。その場合exceptでキャッチしてエラー文とともに再度フォームに返す。  
+reverse関数でurls.py内のnameで指定しているものを使える。
+```python
+def vote(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        # フォームを再度繰り返す
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': 'You didnt select a choice.',
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        # ユーザーがフォームに戻り２回目の投票を防ぐためにHttpResponseRedirectを返す
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+```
+
+### 汎用ビューを使用する
+1. URLconfを変換する
+1. 古いビューを削除する
+1. 汎用ビューにする
+
+ListViewとDetailView の使用。それぞれ「オブジェクトのリストを表示する」「あるタイプのオブジェクトの詳細ページを表示する」という概念を抽象化している。
+
+```python
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.views import generic
+
+from .models import Choice, Question
+
+
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Question.objects.order_by('-pub_date')[:5]
+
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
+
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
+
+
+def vote(request, question_id):
+    ... # same as above, no changes needed.
+```
