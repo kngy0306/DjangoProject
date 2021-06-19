@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'CS50',
     'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -57,7 +58,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join('polls', 'templates')
+            os.path.join('polls', 'templates'),
+            os.path.join('CS50', 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
