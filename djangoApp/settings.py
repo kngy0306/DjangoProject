@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'newyear',
     'CS50',
     'polls.apps.PollsConfig',
     'django.contrib.admin',
@@ -60,6 +61,8 @@ TEMPLATES = [
         'DIRS': [
             os.path.join('polls', 'templates'),
             os.path.join('CS50', 'templates'),
+            os.path.join('newyear', 'templates'),
+            os.path.join('newyear', 'static'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
