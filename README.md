@@ -301,4 +301,4 @@ def vote(request, question_id):
     ... # same as above, no changes needed.
 ```
 
-### 2021-0613 挫折
+### 2021-0613 CS50のDjangoセクションを開始
