@@ -7,6 +7,11 @@ https://docs.djangoproject.com/ja/3.2/intro/tutorial01/
 https://qiita.com/homines22/items/2730d26e932554b6fb58
 
 
+### migrate
+```python3 manage.py makemigrations```  
+```python3 manage.py migrate```
+
+
 ## はじめての Django アプリ作成、その 1
 #### プロジェクトの作成
 最初にセットアップを行う。Djangoのプロジェクトを構成するコードを自動生成。  
