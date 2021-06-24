@@ -1,5 +1,8 @@
 ## Django_Tutorial
 
+### CS50
+https://cs50.jp/web/2020/sql-models-and-migrations/notes/#migrations
+
 ### 公式チュートリアル
 https://docs.djangoproject.com/ja/3.2/intro/tutorial01/
 
@@ -303,4 +306,4 @@ def vote(request, question_id):
     ... # same as above, no changes needed.
 ```
 
-### 2021-0613 挫折
+### 2021-0613 CS50のDjangoセクションを開始
