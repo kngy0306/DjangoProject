@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'users',
     'flights',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -56,7 +57,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            'flights'
+            'flights',
+            'users',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
