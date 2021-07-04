@@ -5,7 +5,7 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, "UI/index.html")
+    return render(request, "index.html")
 
 
 # The texts are much longer in reality, but have
