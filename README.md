@@ -2,6 +2,7 @@
 
 ### CS50
 https://cs50.jp/
+### Ajaxを利用したDjangoアプリにリベンジしたい
 
 ### 公式チュートリアル
 https://docs.djangoproject.com/ja/3.2/intro/tutorial01/
