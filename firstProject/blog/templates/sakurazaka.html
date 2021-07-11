@@ -2,7 +2,7 @@
 <!-- staticタグのロード -->
 {% load static %}
 
-{% block title %}Django's Blog{% endblock %}
+{% block title %}Django's Blog - Sakurazaka{% endblock %}
 
 <!-- Page Header-->
 {% block header %}
@@ -12,7 +12,7 @@
       <div class="col-md-10 col-lg-8 col-xl-7">
         <div class="site-heading">
           <h1>Django's Blog</h1>
-          <span class="subheading">A Blog Theme by Start Bootstrap</span>
+          <span class="subheading">櫻坂46の一覧</span>
         </div>
       </div>
     </div>
@@ -25,7 +25,7 @@
   <div class="row gx-4 gx-lg-5 justify-content-center">
     <div class="col-md-10 col-lg-8 col-xl-7">
       <!-- Post preview-->
-      {% for record in orderby_records %}
+      {% for record in sakurazaka_records %}
       <div class="post-preview">
         <a href="{% url 'blog:blog_detail' record.pk %}">
           <h2 class="post-title">

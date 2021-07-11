@@ -1,0 +1,44 @@
+<!-- is_paginated 表示結果がページ分割されているかどうかを示す真偽値
+     オブジェクトの個数が paginate_by と等しいか
+     それ以下の場合、False になる
+-->
+{% if is_paginated %}
+<ul class="pagination" style="justify-content: center;">
+
+  <!-- Page.has_previous 前のページがある場合、True を返す -->
+  {% if page_obj.has_previous %}
+  <li class="page-item">
+    <a href="?page={{ page_obj.previous_page_number }}" class="page-link" aria-label="Previous">
+      <!-- ↓ bootstrap で 矢印マークを表示するためのエスケープ -->
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  {% endif %}
+
+  <!-- ページ数の表示
+       paginator.page_range: [1, 2, 3, 4] のように、1 から始まるページ番号
+  -->
+  {% for num in paginator.page_range %}
+  {% if page_obj.number == num %}
+  <li class="page-item active">
+    <span class="page-link">{{num}}</span>
+  </li>
+  {% else %}
+  <li class="page-item">
+    <a href="?page={{num}}" class="page-link">{{num}}</a>
+  </li>
+  {% endif %}
+  {% endfor %}
+
+  <!-- 次ページヘのリンク
+       Page.next_page_number: 次のページがある場合に True を返す
+  -->
+  {% if page_obj.has_next %}
+  <li class="page-item">
+    <a href="?page={{page_obj.next_page_number}}" class="page-link" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+  </li>
+  {% endif %}
+</ul>
+{% endif %}
