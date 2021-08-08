@@ -7,5 +7,4 @@ app_name = 'photo'
 # URLパターンを登録するための変数
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
-    # path('', views.IndexView.as_view(), name='index'),
 ]
