@@ -1,6 +1,6 @@
 from django.shortcuts import render
 # TemplateView, CreateViewをインポート
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, ListView
 # reverse_lazyをインポート
 from django.urls import reverse_lazy
 # PhotoPostFormをインポート
@@ -9,12 +9,16 @@ from .forms import PhotoPostForm
 from django.utils.decorators import method_decorator
 # login_requiredをインポート
 from django.contrib.auth.decorators import login_required
+# modelsモジュールからモデルPhotoPostをインポート
+from .models import PhotoPost
 
 
-class IndexView(TemplateView):
+class IndexView(ListView):
     '''トップページのビュー
     '''
     template_name = 'index.html'
+    # モデルPhotoPostのオブジェクトにorder_by()を適応して投稿日時の降順で並び替え
+    queryset = PhotoPost.objects.order_by('-posted_at')
 
 # デコレータによりCreatePhotoViewへのアクセスはログインユーザーに限定される
 # ログイン状態でなければsettings.pyのLOGIN_URLにリダイレクト
@@ -59,6 +63,7 @@ class CreatePhotoView(CreateView):
         postdata.save()
         # 戻り値はスーパークラスのform_valid()の戻り値(HttpResponseRedirect)
         return super().form_valid(form)
+
 
 class PostSuccessView(TemplateView):
     '''投稿完了のページのビュー
