@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'photo.apps.PhotoConfig',
     # accountsアプリの追加
     'accounts.apps.AccountsConfig',
+    # django-cleanupを追加
+    'django_cleanup',
 ]
 
 MIDDLEWARE = [
