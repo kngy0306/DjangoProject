@@ -6,7 +6,7 @@
       </p>
       <p>
         {% if user.is_authenticated %}
-          <a href="#" class="btn btn-primary my-2">投稿する</a>
+          <a href="{% url 'photo:post' %}" class="btn btn-primary my-2">投稿する</a>
           <a href="{% url 'accounts:logout' %}" class="btn btn-secondary my-2">ログアウト</a>
         {% else %}
           <a href="{% url 'accounts:signup' %}" class="btn btn-primary my-2">今すぐサインアップ</a>
