@@ -19,6 +19,8 @@ class IndexView(ListView):
     template_name = 'index.html'
     # モデルPhotoPostのオブジェクトにorder_by()を適応して投稿日時の降順で並び替え
     queryset = PhotoPost.objects.order_by('-posted_at')
+    # 1ページに表示するレコード件数
+    paginate_by = 6
 
 # デコレータによりCreatePhotoViewへのアクセスはログインユーザーに限定される
 # ログイン状態でなければsettings.pyのLOGIN_URLにリダイレクト
