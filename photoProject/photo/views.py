@@ -74,3 +74,30 @@ class PostSuccessView(TemplateView):
         template_name: レンダリングするテンプレート
     '''
     template_name = 'post_success.html'
+
+
+class CategoryView(ListView):
+    '''カテゴリページのビュー
+
+    Attributes:
+        template_name: レンダリングするテンプレート
+        paginate_by: 1ページに表示するレコード件数
+    '''
+    template_name = 'index.html'
+    paginate_by = 6
+
+    def get_queryset(self):
+        '''クエリの実行
+
+        self.kwargsの取得が必要なので、クラス変数querysetではなく、get_queryset()のオーバーライド
+
+        Returns:
+            クエリによって取得されたレコード
+        '''
+        # self.kwargsでキーワードの辞書を取得し、categoryキーの値（Categorysテーブルのid）を取得
+        category_id = self.kwargs['category']
+        # filterで絞り込み
+        categories = PhotoPost.objects.filter(
+            category=category_id).order_by('-posted_at')
+        # クエリの結果を返す
+        return categories
