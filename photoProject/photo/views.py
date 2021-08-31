@@ -101,3 +101,30 @@ class CategoryView(ListView):
             category=category_id).order_by('-posted_at')
         # クエリの結果を返す
         return categories
+
+
+class UserView(ListView):
+    '''ユーザー投稿一覧ページのビュー
+
+    Attributes:
+        template_name: レンダリングするテンプレート
+        paginate_by: 1ページに表示するレコード件数
+    '''
+    template_name = 'index.html'
+    paginate_by = 6
+
+    def get_queryset(self):
+        '''クエリを実行する
+
+        self.kwargsの取得が必要なため、get_queryset()のオーバーライド
+
+        Returns:
+            クエリによって取得されたレコード
+        '''
+        # self.kwargsからuserキーの値（「ユーザー」テーブルのid）を取得
+        user_id = self.kwargs['user']
+        # filterで絞り込み
+        user_list = PhotoPost.objects.filter(
+            user=user_id).order_by('-posted_at')
+        # クエリの結果を返す
+        return user_list

@@ -10,4 +10,5 @@ urlpatterns = [
     path('post/', views.CreatePhotoView.as_view(), name='post'),
     path('post_done/', views.PostSuccessView.as_view(), name='post_done'),
     path('photos/<int:category>', views.CategoryView.as_view(), name='photos_cat'),
+    path('user_list/<int:user>', views.UserView.as_view(), name='user_list'),
 ]

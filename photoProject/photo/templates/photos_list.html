@@ -22,9 +22,12 @@
                 <!-- カテゴリ表示ボタン -->
                 <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='{% url 'photo:photos_cat' category=record.category.id %}'">{{ record.category.title }}</button>
               </div>
-              <small class="text-muted">
-                {{ record.user.username }}
-              </small>
+              <!-- 投稿したユーザー名を出力し、一覧ページへのリンクを設定 -->
+              <a href="{% url 'photo:user_list' user=record.user.id %}">
+                <small class="text-muted">
+                  {{ record.user.username }}
+                </small>
+              </a>
             </div>
           </div>
         </div>
