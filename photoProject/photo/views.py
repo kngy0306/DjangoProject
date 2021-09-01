@@ -1,6 +1,6 @@
 from django.shortcuts import render
 # TemplateView, CreateViewをインポート
-from django.views.generic import TemplateView, CreateView, ListView
+from django.views.generic import TemplateView, CreateView, ListView, DetailView
 # reverse_lazyをインポート
 from django.urls import reverse_lazy
 # PhotoPostFormをインポート
@@ -128,3 +128,15 @@ class UserView(ListView):
             user=user_id).order_by('-posted_at')
         # クエリの結果を返す
         return user_list
+
+
+class DetailView(DetailView):
+    '''詳細ページのビュー
+
+    投稿記事の詳細を表示
+    Attributes:
+        template_name: レンダリングするテンプレート
+        model: モデルクラス
+    '''
+    template_name = 'detail.html'
+    model = PhotoPost
