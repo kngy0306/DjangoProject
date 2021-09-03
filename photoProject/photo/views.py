@@ -140,3 +140,28 @@ class DetailView(DetailView):
     '''
     template_name = 'detail.html'
     model = PhotoPost
+
+
+class MypageView(ListView):
+    '''マイページのビュー
+
+    Attributes:
+        template_name: レンダリングするテンプレート
+        paginate_by: 1ページに表示するレコード数
+    '''
+    template_name = 'mypage.html'
+    paginate_by = 6
+
+    def get_queryset(self):
+        '''クエリを実行する
+
+        self.kwargsの取得が必要なため、get_queryset()のオーバーライド
+
+        Returns:
+            クエリによって取得されたレコード
+        '''
+        # 現在ログインしているユーザー名はHttpRequest.userに格納されている
+        # filter(userフィールド=userオブジェクト)で絞り込み
+        queryset = PhotoPost.objects.filter(
+            user=self.request.user).order_by('-posted_at')
+        return queryset
