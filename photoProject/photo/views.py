@@ -1,6 +1,6 @@
 from django.shortcuts import render
 # TemplateView, CreateViewをインポート
-from django.views.generic import TemplateView, CreateView, ListView, DetailView
+from django.views.generic import TemplateView, CreateView, ListView, DetailView, DeleteView
 # reverse_lazyをインポート
 from django.urls import reverse_lazy
 # PhotoPostFormをインポート
@@ -165,3 +165,34 @@ class MypageView(ListView):
         queryset = PhotoPost.objects.filter(
             user=self.request.user).order_by('-posted_at')
         return queryset
+
+
+class PhotoDeleteView(DeleteView):
+    '''レコードの削除
+
+    Attributes:
+        model: モデル
+        template_name: レンダリングするテンプレート
+        paginate_by: 1ページに表示するレコード数
+        success_url: 削除完了後のリダイレクト先
+    '''
+    # 操作対象はPhotoPostモデル
+    model = PhotoPost
+    # レンダリングするテンプレート
+    template_name = 'photo_delete.html'
+    # 削除完了後のリダイレクト先
+    success_url = reverse_lazy('photo:mypage')
+
+    def delete(self, request, *args, **kwargs):
+        '''django.views.generic.edit.DeletionMixin.delete()のオーバーライド
+
+            Parameters:
+                self: PhotoDeleteViewオブジェクト
+                request: WSGIRequest(HttpRequest)オブジェクト
+                args: 引数として渡される辞書
+                kwargs: キワード付き辞書
+            
+            Returns:
+                HttpResponseRedirect(success_url)を返してsuccess_urlにリダイレクト
+        '''
+        return super().delete(request, *args, **kwargs)

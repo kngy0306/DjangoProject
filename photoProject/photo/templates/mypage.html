@@ -6,7 +6,7 @@
 {% if user.is_authenticated %}
   <br>
   <div style="text-align: center;">
-    <h4>{{ user.uesrname }}のマイページ</h4>
+    <h4>{{ user.username }}のマイページ</h4>
     {% if object_list.count == 0 %}
       <p>{{ user.username }}の投稿はありません</p>
     {% else %}

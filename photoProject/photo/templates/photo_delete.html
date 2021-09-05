@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Photo Detail{% endblock %}
+
+{% block contents %}
+<div class="container">
+  <div class="row">
+    <div class="col offset-3">
+      <br>
+      <p>削除しますか？</p>
+      <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="削除する" class="btn my-2 btn-danger">
+      </form>
+      <a href="{% url 'photo:photo_detail' object.pk %}" class="btn btn-primary my-2">キャンセル</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
